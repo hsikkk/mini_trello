@@ -5,7 +5,6 @@ import android.graphics.Typeface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.*
-import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -24,7 +23,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(view)
 
         val group_id = intent.getStringExtra("id_group")
-        viewModel = MainViewModel(group_id)
+        viewModel = MainViewModel(group_id ?: "")
 
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(this@MainActivity)
@@ -49,6 +48,28 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater: MenuInflater = menuInflater
+        inflater.inflate(R.menu.todo, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val group_id = intent.getStringExtra("id_group")
+        return when (item.itemId) {
+            R.id.action_invite_user -> {
+                inviteUser(group_id)
+                true
+            }
+            R.id.action_exit_group -> {
+                exitGroup(group_id)
+                onBackPressed()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
 }
 
 class TodoAdapter(
@@ -70,7 +91,7 @@ class TodoAdapter(
         val todo = myDataset[position]
         holder.binding.todoText.text = todo.getString("text") ?: ""
 
-        if (todo.getBoolean("done") ?: false) {
+        if (todo.getBoolean("done") == true) {
             holder.binding.todoText.apply {
                 paintFlags = paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
                 setTypeface(null, Typeface.ITALIC)
