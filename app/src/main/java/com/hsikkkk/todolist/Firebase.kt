@@ -5,7 +5,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
-fun inviteUser(group_id: String,group_name: String, email: String) {
+fun addUser(group_id: String, group_name: String, email: String) {
     val db = Firebase.firestore
 
     db.collection("User")
@@ -44,12 +44,4 @@ fun exitGroup(group_id: String) {
         .document(user!!.uid)
         .collection("group")
         .document(group_id).delete()
-}
-
-fun getUserId(email: String): String {
-    val db = Firebase.firestore
-    Log.d("abc", "email: " + email)
-    var uid = ""
-
-    return uid
 }

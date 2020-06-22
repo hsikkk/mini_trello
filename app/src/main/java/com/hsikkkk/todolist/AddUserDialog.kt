@@ -20,7 +20,7 @@ class AddUserDialogFragment(val group_id: String, val group_name: String) : Dial
                 .setMessage(R.string.dialog_add_user)
                 .setPositiveButton(R.string.fire,
                     DialogInterface.OnClickListener { dialog, id ->
-                        inviteUser(group_id, group_name, binding.inputEmail.text.toString())
+                        addUser(group_id, group_name, binding.inputEmail.text.toString())
                     })
                 .setNegativeButton(R.string.cancel,
                     DialogInterface.OnClickListener { dialog, id ->
