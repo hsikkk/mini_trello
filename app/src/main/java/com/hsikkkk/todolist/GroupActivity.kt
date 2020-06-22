@@ -117,7 +117,10 @@ class GroupAdapter(
 
         holder.binding.root.setOnClickListener{
             val intent = Intent(context, MainActivity::class.java)
-            intent.putExtra("id_group", group.id)
+            intent.apply{
+                putExtra("group_id", group.id)
+                putExtra("group_name", group.getString("name") ?: "")
+            }
             context.startActivity(intent)
         }
     }

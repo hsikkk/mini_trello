@@ -5,6 +5,7 @@ import android.graphics.Typeface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.*
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -22,7 +23,8 @@ class MainActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-        val group_id = intent.getStringExtra("id_group")
+        val group_id = intent.getStringExtra("group_id")
+
         viewModel = MainViewModel(group_id ?: "")
 
         binding.recyclerView.apply {
@@ -55,15 +57,17 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val group_id = intent.getStringExtra("id_group")
+        val group_id = intent.getStringExtra("group_id")
+        val group_name = intent.getStringExtra("group_name")
+
         return when (item.itemId) {
             R.id.action_invite_user -> {
-                inviteUser(group_id)
+                AddUserDialogFragment(group_id, group_name).show(supportFragmentManager, null)
                 true
             }
             R.id.action_exit_group -> {
-                exitGroup(group_id)
-                onBackPressed()
+                ExitGroupDialogFragment(group_id, this@MainActivity)
+                    .show(supportFragmentManager, null)
                 true
             }
             else -> super.onOptionsItemSelected(item)
