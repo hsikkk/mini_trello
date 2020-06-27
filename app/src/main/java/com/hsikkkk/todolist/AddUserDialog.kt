@@ -7,7 +7,7 @@ import android.os.Bundle
 import androidx.fragment.app.DialogFragment
 import com.hsikkkk.todolist.databinding.DialogAddUserBinding
 
-class AddUserDialogFragment(val group_id: String, val group_name: String) : DialogFragment() {
+class AddUserDialogFragment(val group_id: String) : DialogFragment() {
     private lateinit var binding: DialogAddUserBinding
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -20,7 +20,7 @@ class AddUserDialogFragment(val group_id: String, val group_name: String) : Dial
                 .setMessage(R.string.dialog_add_user)
                 .setPositiveButton(R.string.fire,
                     DialogInterface.OnClickListener { dialog, id ->
-                        addUser(group_id, group_name, binding.inputEmail.text.toString())
+                        addUser(group_id, binding.inputEmail.text.toString())
                     })
                 .setNegativeButton(R.string.cancel,
                     DialogInterface.OnClickListener { dialog, id ->

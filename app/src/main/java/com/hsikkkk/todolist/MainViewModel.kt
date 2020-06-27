@@ -51,4 +51,12 @@ class MainViewModel(val group_id: String) : ViewModel() {
             .document(todo.id)
             .update("done", !(todo.getBoolean("done") ?: false))
     }
+
+    fun setTitle(actionBar: androidx.appcompat.app.ActionBar) {
+        db.collection("Group")
+            .document(group_id).get()
+            .addOnSuccessListener {
+            actionBar.setTitle(it.getString("name"))
+        }
+    }
 }

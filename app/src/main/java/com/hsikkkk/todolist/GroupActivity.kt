@@ -15,7 +15,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentSnapshot
 import com.hsikkkk.todolist.databinding.ActivityGroupBinding
 import com.hsikkkk.todolist.databinding.ItemGroupBinding
-import com.hsikkkk.todolist.databinding.ItemTodoBinding
 
 class GroupActivity : AppCompatActivity() {
     val RC_SIGN_IN = 1000
@@ -38,6 +37,11 @@ class GroupActivity : AppCompatActivity() {
                 emptyList(),
                 this@GroupActivity
             )
+        }
+
+        binding.buttonAddGroup.setOnClickListener {
+            AddGroupDialogFragment(this@GroupActivity)
+                .show(supportFragmentManager, null)
         }
 
         viewModel.groupLiveData.observe(this, Observer {
@@ -113,13 +117,13 @@ class GroupAdapter(
 
     override fun onBindViewHolder(holder: GroupViewHolder, position: Int) {
         val group = myDataset[position]
-        holder.binding.groupText.text = group.getString("name") ?: ""
+
+        getGroupName(group.id, holder.binding.groupText)
 
         holder.binding.root.setOnClickListener{
             val intent = Intent(context, MainActivity::class.java)
             intent.apply{
                 putExtra("group_id", group.id)
-                putExtra("group_name", group.getString("name") ?: "")
             }
             context.startActivity(intent)
         }
