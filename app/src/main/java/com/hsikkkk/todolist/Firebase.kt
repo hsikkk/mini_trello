@@ -64,7 +64,6 @@ fun addGroup(group_name: String, context: Context) {
         }
 }
 
-
 fun exitGroup(group_id: String) {
     val db = Firebase.firestore
     val user = FirebaseAuth.getInstance().currentUser
@@ -79,8 +78,14 @@ fun exitGroup(group_id: String) {
         .collection("users")
         .document(user!!.uid).delete()
 
+    db.collection("Group")
+        .document(group_id).apply{
+            collection("users")
+            .get().addOnSuccessListener {
+                if(it.isEmpty) this.delete()
+            }
+        }
 }
-
 
 fun getGroupName(id: String, textView: TextView) {
     val db = Firebase.firestore
@@ -90,4 +95,15 @@ fun getGroupName(id: String, textView: TextView) {
         .addOnSuccessListener {
             textView.text = it.getString("name")
         }
+}
+
+fun registerUser(){
+    val db = Firebase.firestore
+    val user = FirebaseAuth.getInstance().currentUser
+
+    db.collection("User")
+        .document(user!!.uid)
+        .set(
+            hashMapOf("email" to user.email)
+        )
 }

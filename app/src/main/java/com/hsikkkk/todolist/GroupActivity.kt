@@ -56,6 +56,7 @@ class GroupActivity : AppCompatActivity() {
 
             if (resultCode == Activity.RESULT_OK) {
                 viewModel.fetchData()
+                registerUser()
             } else {
                 finish()
             }
